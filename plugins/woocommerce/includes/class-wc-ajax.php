@@ -1699,12 +1699,14 @@ class WC_AJAX {
 			wp_die();
 		}
 
+		$hide_empty       = isset( $_GET['hide_empty'] ) ? wc_clean( wp_unslash( $_GET['hide_empty'] ) ) : true;
+		$hide_empty       = $hide_empty === 'false' ? false : true;
 		$found_categories = array();
 		$args             = array(
 			'taxonomy'   => array( 'product_cat' ),
 			'orderby'    => 'id',
 			'order'      => 'ASC',
-			'hide_empty' => true,
+			'hide_empty' => $hide_empty,
 			'fields'     => 'all',
 			'name__like' => $search_text,
 		);
@@ -1725,6 +1727,7 @@ class WC_AJAX {
 					}
 				}
 
+				$term->parents						= $ancestors;
 				$term->formatted_name              .= $term->name . ' (' . $term->count . ')';
 				$found_categories[ $term->term_id ] = $term;
 			}
@@ -1747,11 +1750,6 @@ class WC_AJAX {
 
 		$search_text = isset( $_GET['term'] ) ? wc_clean( wp_unslash( $_GET['term'] ) ) : '';
 
-		if ( ! $search_text ) {
-			wp_die();
-		}
-
-		$found_categories = array();
 		$args             = array(
 			'taxonomy'   => array( 'product_cat' ),
 			'orderby'    => 'id',
@@ -1764,18 +1762,15 @@ class WC_AJAX {
 		$terms = get_terms( $args );
 
 		$terms_map = array();
-		foreach ($terms as $key => $value) {
-			$terms_map[$value->term_id] = array(
-				'term_id' => $value->term_id
-			);
-		}
 
 		if ( $terms ) {
 			foreach ( $terms as $term ) {
+				$terms_map[ $term->term_id ] = $term;
 				$term->formatted_name = '';
 
 				if ( $term->parent ) {
 					$ancestors = get_ancestors( $term->term_id, 'product_cat' );
+					$current_child = $term;
 					foreach ( $ancestors as $ancestor ) {
 						if ( ! isset( $terms_map[ $ancestor ] ) ) {
 							$ancestor_term = get_term( $ancestor, 'product_cat' );
@@ -1784,11 +1779,10 @@ class WC_AJAX {
 						if ( ! $terms_map[ $ancestor ]->children ) {
 							$terms_map[$ancestor]->children = array();
 						}
-						$terms_map[ $ancestor ]->children[] = $term;
+						$terms_map[ $ancestor ]->children[] = $current_child;
+						$current_child = $ancestor_term;
 					}
 				}
-
-				$found_categories[ $term->term_id ] = $term;
 			}
 		}
 		$parent_terms = array_filter( array_values( $terms_map ), function( $term ) {
