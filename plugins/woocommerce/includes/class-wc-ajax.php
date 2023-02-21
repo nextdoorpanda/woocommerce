@@ -1749,6 +1749,7 @@ class WC_AJAX {
 		}
 
 		$search_text = isset( $_GET['term'] ) ? wc_clean( wp_unslash( $_GET['term'] ) ) : '';
+		$number      = isset( $_GET['number'] ) ? absint( wp_unslash( $_GET['number'] ) ) : 50;
 
 		$args             = array(
 			'taxonomy'   => array( 'product_cat' ),
@@ -1756,6 +1757,7 @@ class WC_AJAX {
 			'order'      => 'ASC',
 			'hide_empty' => false,
 			'fields'     => 'all',
+			'number'     => $number,
 			'name__like' => $search_text,
 		);
 
