@@ -64,6 +64,7 @@ import { ARROW_DOWN, ARROW_UP, ENTER, ESCAPE, ROOT_VALUE } from './constants';
  * @param {string}                     [props.className]                  The class name for this component
  * @param {boolean}                    [props.disabled]                   Disables the component
  * @param {boolean}                    [props.includeParent]              Includes parent with selection.
+ * @param {boolean}                    [props.alwaysShowPlaceholder]      Will always show placeholder (default: false)
  * @param {Option[]}                   [props.options]                    Options to show in the component
  * @param {string[]}                   [props.value]                      Selected values
  * @param {number}                     [props.maxVisibleTags]             The maximum number of tags to show. Undefined, 0 or less than 0 evaluates to "Show All".
@@ -87,6 +88,7 @@ const TreeSelectControl = ( {
 	onDropdownVisibilityChange = noop,
 	onInputChange = noop,
 	includeParent = false,
+	alwaysShowPlaceholder = false,
 } ) => {
 	let instanceId = useInstanceId( TreeSelectControl );
 	instanceId = id ?? instanceId;
@@ -503,6 +505,7 @@ const TreeSelectControl = ( {
 				value={ inputControlValue }
 				onTagsChange={ handleTagsChange }
 				onInputChange={ handleOnInputChange }
+				alwaysShowPlaceholder={ alwaysShowPlaceholder }
 			/>
 			{ showTree && (
 				<div
