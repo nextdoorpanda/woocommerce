@@ -392,6 +392,7 @@ const TreeSelectControl = ( {
 			handleSingleChange( checked, option, parent );
 		}
 
+		onInputChange( '' );
 		setInputControlValue( '' );
 		if ( ! nodesExpanded.includes( option.parent ) ) {
 			controlRef.current.focus();
