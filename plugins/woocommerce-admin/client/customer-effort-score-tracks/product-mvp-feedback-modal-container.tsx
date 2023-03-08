@@ -2,10 +2,8 @@
  * External dependencies
  */
 import { useDispatch, useSelect } from '@wordpress/data';
-import {
-	ProductMVPFeedbackModal,
-	STORE_KEY,
-} from '@woocommerce/customer-effort-score';
+import { STORE_KEY } from '@woocommerce/customer-effort-score';
+import { __experimentalProductMVPFeedbackModal as ProductMVPFeedbackModal } from '@woocommerce/product-editor';
 import { recordEvent } from '@woocommerce/tracks';
 import { getAdminLink } from '@woocommerce/settings';
 import { useFormContext } from '@woocommerce/components';
