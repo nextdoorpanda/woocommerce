@@ -9,7 +9,7 @@ import {
 	useState,
 	createPortal,
 	Children,
-	useEffect,
+	useLayoutEffect,
 } from '@wordpress/element';
 
 /**
@@ -33,7 +33,7 @@ export const Menu = ( {
 	const [ boundingRect, setBoundingRect ] = useState< DOMRect >();
 	const selectControlMenuRef = useRef< HTMLDivElement >( null );
 
-	useEffect( () => {
+	useLayoutEffect( () => {
 		if (
 			selectControlMenuRef.current?.parentElement &&
 			selectControlMenuRef.current?.parentElement.clientWidth > 0
