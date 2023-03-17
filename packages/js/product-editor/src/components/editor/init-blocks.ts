@@ -8,6 +8,7 @@ import { registerCoreBlocks } from '@wordpress/block-library';
  */
 import { init as initName } from '../details-name-block';
 import { init as initSummary } from '../details-summary-block';
+import { init as initCategory } from '../category-block';
 import { init as initSection } from '../section';
 import { init as initTab } from '../tab';
 import { init as initPricing } from '../pricing-block';
@@ -15,6 +16,7 @@ import { init as initCollapsible } from '../collapsible-block';
 
 export const initBlocks = () => {
 	registerCoreBlocks();
+	initCategory();
 	initName();
 	initSummary();
 	initSection();
